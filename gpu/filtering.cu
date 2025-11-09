@@ -137,7 +137,7 @@ Image bilateralGpuBasic(const Image & im, float sigmaRange, float sigmaDomain, f
     dim3 blocksPerGrid(blocksPerGrid_x, blocksPerGrid_y);
     size_t im_num_pixel = im.number_of_elements();
 
-    // Device definition
+    // Pointers to device memory
     float * im_d = nullptr;
     float * im_out_d = nullptr;
 
