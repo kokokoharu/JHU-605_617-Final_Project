@@ -241,7 +241,6 @@ Image toneMap(const Image &im, float targetBase, float detailAmp, float sigmaRan
 }
 
 
-
 /*********************************************************************
  *                       Tone mapping helpers                        *
  *********************************************************************/
