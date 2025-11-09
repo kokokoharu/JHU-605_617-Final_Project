@@ -66,6 +66,8 @@ public:
     float min() const;
     float max() const;
 
+    const float * data() const { return image_data.data(); }
+
 private:
     unsigned int dims;          // Number of dimensions
     unsigned int dim_values[3]; // Size of each dimension
