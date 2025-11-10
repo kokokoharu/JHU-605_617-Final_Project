@@ -76,6 +76,7 @@ void testMakeHDR_GPU() {
 void testToneMapping_ante1() {
 
     cout << "\n========== testToneMapping_ante1 ==========" << endl;
+    cout << endl;
 
     // load images
     vector<Image> imSeq;
@@ -97,9 +98,11 @@ void testToneMapping_ante1() {
     tm = gamma_code(tm, 2.2);
     tm.write("./Output/ante1-tonedHDRsimple-bilateral.png");
 
-    cout << "\nTest-level timings:" << endl;
-    cout << "  makeHdrGpuBasic: " << t_hdr << " ms" << endl;
+    cout << "========================================" << endl;
+    cout << "Overall timing for testToneMapping_ante1:" << endl;
+    cout << "  makeHDR: " << t_hdr << " ms" << endl;
     cout << "  toneMap: " << t_tm << " ms" << endl;
+    cout << "========================================" << endl;
 
 }
 
@@ -107,6 +110,7 @@ void testToneMapping_ante1() {
 void testToneMapping_ante2() {
 
     cout << "\n========== testToneMapping_ante2 ==========" << endl;
+    cout << endl;
 
     // load images
     vector<Image> imSeq;
@@ -128,9 +132,11 @@ void testToneMapping_ante2() {
     tm = gamma_code(tm, 2.2);
     tm.write("./Output/ante2-tonedHDRsimple-bilateral.png");
 
-    cout << "\nTest-level timings:" << endl;
-    cout << "  makeHdrGpuBasic: " << t_hdr << " ms" << endl;
+    cout << "========================================" << endl;
+    cout << "Overall timing for testToneMapping_ante2:" << endl;
+    cout << "  makeHDR: " << t_hdr << " ms" << endl;
     cout << "  toneMap: " << t_tm << " ms" << endl;
+    cout << "========================================" << endl;
 
 }
 
@@ -138,6 +144,7 @@ void testToneMapping_ante2() {
 void testToneMapping_ante3() {
 
     cout << "\n========== testToneMapping_ante3 ==========" << endl;
+    cout << endl;
 
     // load images
     vector<Image> imSeq;
@@ -161,9 +168,11 @@ void testToneMapping_ante3() {
     tm = gamma_code(tm, 2.2f);
     tm.write("./Output/ante3-tonedHDRsimple-bilateral.png");
 
-    cout << "\nTest-level timings:" << endl;
-    cout << "  makeHdrGpuBasic: " << t_hdr << " ms" << endl;
+    cout << "========================================" << endl;
+    cout << "Overall timing for testToneMapping_ante3:" << endl;
+    cout << "  makeHDR: " << t_hdr << " ms" << endl;
     cout << "  toneMap: " << t_tm << " ms" << endl;
+    cout << "========================================" << endl;
 
 }
 
@@ -171,6 +180,7 @@ void testToneMapping_ante3() {
 void testToneMapping_boston() {
 
     cout << "\n========== testToneMapping_boston ==========" << endl;
+    cout << endl;
 
     // load images
     vector<Image> imSeq;
@@ -193,14 +203,17 @@ void testToneMapping_boston() {
     tm = gamma_code(tm, 2.2);
     tm.write("./Output/boston-tonedHDRsimple-bilateral.png");
 
-    cout << "\nTest-level timings:" << endl;
-    cout << "  makeHdrGpuBasic: " << t_hdr << " ms" << endl;
+    cout << "========================================" << endl;
+    cout << "Overall timing for testToneMapping_boston:" << endl;
+    cout << "  makeHDR: " << t_hdr << " ms" << endl;
     cout << "  toneMap: " << t_tm << " ms" << endl;
+    cout << "========================================" << endl;
 }
 
 void testToneMapping_design() {
 
     cout << "\n========== testToneMapping_design ==========" << endl;
+    cout << endl;
 
     // load images
     vector<Image> imSeq;
@@ -228,14 +241,17 @@ void testToneMapping_design() {
     tm = gamma_code(tm, 2.2);
     tm.write("./Output/design-tonedHDRsimple-bilateral.png");
 
-    cout << "\nTest-level timings:" << endl;
-    cout << "  makeHdrGpuBasic: " << t_hdr << " ms" << endl;
+    cout << "========================================" << endl;
+    cout << "Overall timing for testToneMapping_design:" << endl;
+    cout << "  makeHDR: " << t_hdr << " ms" << endl;
     cout << "  toneMap: " << t_tm << " ms" << endl;
+    cout << "========================================" << endl;
 }
 
 void testToneMapping_horse() {
 
     cout << "\n========== testToneMapping_horse ==========" << endl;
+    cout << endl;
 
     // load images
     vector<Image> imSeq;
@@ -258,14 +274,17 @@ void testToneMapping_horse() {
     tm = gamma_code(tm, 2.2);
     tm.write("./Output/horse-tonedHDRsimple-bilateral.png");
 
-    cout << "\nTest-level timings:" << endl;
-    cout << "  makeHdrGpuBasic: " << t_hdr << " ms" << endl;
+    cout << "========================================" << endl;
+    cout << "Overall timing for testToneMapping_horse:" << endl;
+    cout << "  makeHDR: " << t_hdr << " ms" << endl;
     cout << "  toneMap: " << t_tm << " ms" << endl;
+    cout << "========================================" << endl;
 }
 
 void testToneMapping_nyc() {
 
     cout << "\n========== testToneMapping_nyc ==========" << endl;
+    cout << endl;
 
     // load images
     vector<Image> imSeq;
@@ -288,14 +307,17 @@ void testToneMapping_nyc() {
     tm = gamma_code(tm, 2.2);
     tm.write("./Output/nyc-tonedHDRsimple-bilateral.png");
 
-    cout << "\nTest-level timings:" << endl;
-    cout << "  makeHdrGpuBasic: " << t_hdr << " ms" << endl;
+    cout << "========================================" << endl;
+    cout << "Overall timing for testToneMapping_nyc:" << endl;
+    cout << "  makeHDR: " << t_hdr << " ms" << endl;
     cout << "  toneMap: " << t_tm << " ms" << endl;
+    cout << "========================================" << endl;
 }
 
 void testToneMapping_sea() {
 
     cout << "\n========== testToneMapping_sea ==========" << endl;
+    cout << endl;
 
     // load images
     vector<Image> imSeq;
@@ -318,14 +340,17 @@ void testToneMapping_sea() {
     tm = gamma_code(tm, 2.2);
     tm.write("./Output/sea-tonedHDRsimple-bilateral.png");
 
-    cout << "\nTest-level timings:" << endl;
-    cout << "  makeHdrGpuBasic: " << t_hdr << " ms" << endl;
+    cout << "========================================" << endl;
+    cout << "Overall timing for testToneMapping_sea:" << endl;
+    cout << "  makeHDR: " << t_hdr << " ms" << endl;
     cout << "  toneMap: " << t_tm << " ms" << endl;
+    cout << "========================================" << endl;
 }
 
 void testToneMapping_vine() {
 
     cout << "\n========== testToneMapping_vine ==========" << endl;
+    cout << endl;
 
     // load images
     vector<Image> imSeq;
@@ -349,9 +374,11 @@ void testToneMapping_vine() {
     tm = gamma_code(tm, 2.2);
     tm.write("./Output/vine-tonedHDRsimple-bilateral.png");
 
-    cout << "\nTest-level timings:" << endl;
-    cout << "  makeHdrGpuBasic: " << t_hdr << " ms" << endl;
+    cout << "========================================" << endl;
+    cout << "Overall timing for testToneMapping_vine:" << endl;
+    cout << "  makeHDR: " << t_hdr << " ms" << endl;
     cout << "  toneMap: " << t_tm << " ms" << endl;
+    cout << "========================================" << endl;
 }
 
 int main() {

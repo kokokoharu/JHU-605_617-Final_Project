@@ -272,17 +272,18 @@ Image toneMap(const Image &im, float targetBase, float detailAmp, float sigmaRan
     TimePoint t_end_total = now();
     double t_total = elapsed_ms(t_start_total, t_end_total);
 
-    cout << "toneMap timings:" << endl;
+    cout << "=== toneMap (bilateral) ===" << endl;
     cout << "  lumiChromi: " << t_lumiChromi << " ms" << endl;
     cout << "  log10Image: " << t_log10Image << " ms" << endl;
     cout << "  sigmaDomain calc: " << t_sigmaDomain << " ms" << endl;
-    cout << "  bilateral: " << t_bilateral << " ms" << endl;
+    cout << "  bilateral (GPU): " << t_bilateral << " ms" << endl;
     cout << "  detail computation: " << t_detail << " ms" << endl;
     cout << "  scale factor k: " << t_scaleFactor << " ms" << endl;
     cout << "  new_log_lumi: " << t_newLogLumi << " ms" << endl;
     cout << "  exp10Image: " << t_exp10Image << " ms" << endl;
     cout << "  lumiChromi2rgb: " << t_lumiChromi2rgb << " ms" << endl;
-    cout << "  Total: " << t_total << " ms" << endl;
+    cout << "Total toneMap (bilateral): " << t_total << " ms" << endl;
+    cout << endl;
 
     return result;
 

@@ -234,11 +234,12 @@ Image makeHdrGpuBasic(vector<Image> &imSeq, float epsilonMini, float epsilonMaxi
     TimePoint t_end_total = now();
     double t_total = elapsed_ms(t_start_total, t_end_total);
 
-    cout << "makeHdrGpuBasic timings:" << endl;
-    cout << "  GPU weight calculations: " << t_weight_gpu << " ms" << endl;
-    cout << "  CPU factor calculations: " << t_factor_cpu << " ms" << endl;
-    cout << "  GPU merging: " << t_merge_gpu << " ms" << endl;
-    cout << "  Total: " << t_total << " ms" << endl;
+    cout << "=== makeHDR ===" << endl;
+    cout << "  Total weight calculations (GPU): " << t_weight_gpu << " ms" << endl;
+    cout << "  Total factor calculations: " << t_factor_cpu << " ms" << endl;
+    cout << "  Merging (GPU): " << t_merge_gpu << " ms" << endl;
+    cout << "Total makeHDR: " << t_total << " ms" << endl;
+    cout << endl;
 
     return hdr;
 }
