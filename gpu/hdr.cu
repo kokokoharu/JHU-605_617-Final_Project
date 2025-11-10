@@ -170,7 +170,7 @@ Image makeHdrGpuBasic(vector<Image> &imSeq, float epsilonMini, float epsilonMaxi
     CUDA_CHECK(cudaMalloc((void **)&factors_d, N * sizeof(float)));
     CUDA_CHECK(cudaMemcpy(factors_d, factors_h.data(), N * sizeof(float), cudaMemcpyHostToDevice));
 
-    // TODO: Perform HDR merge on device
+    // Perform HDR merge on device
     // Upload array of device image pointers and array of device weight pointers
     CUDA_CHECK(cudaMalloc((void **)&imSeq_d_ptr, N * sizeof(float*)));
     CUDA_CHECK(cudaMalloc((void **)&weightMaps_d_ptr, N * sizeof(float*)));

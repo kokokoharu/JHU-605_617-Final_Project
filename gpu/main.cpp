@@ -39,7 +39,7 @@ void testComputeFactor() {
 }
 
 
-void testMakeHDR() {
+void testMakeHDR_GPU() {
     // load an image sequence
     vector<Image> imSeq;
     imSeq.push_back(gamma_code(Image("../Input/design-1.png"), 1.0/2.2));
@@ -68,6 +68,24 @@ void testMakeHDR() {
     hdrScale8.write("./Output/scaledHDR_design_8.png");
     Image hdrScale10 = gamma_code((2e10)*hdr/maxVal, 2.2);
     hdrScale10.write("./Output/scaledHDR_design_10.png");
+
+}
+
+// HDR and Tone Mapping on Ante1 images
+void testToneMapping_ante1() {
+
+    // load images
+    vector<Image> imSeq;
+    imSeq.push_back(gamma_code(Image("../Input/ante1-1.png"), 1.0/2.2));
+    imSeq.push_back(gamma_code(Image("../Input/ante1-2.png"), 1.0/2.2));
+
+    // create hdr image
+    Image hdr = makeHdrGpuBasic(imSeq);
+
+    // tone map with bilaterial
+    Image tm = toneMap(hdr, 100, 3, 0.1);
+    tm = gamma_code(tm, 2.2);
+    tm.write("./Output/ante1-tonedHDRsimple-bilateral.png");
 
 }
 
@@ -149,15 +167,89 @@ void testToneMapping_design() {
     tm.write("./Output/design-tonedHDRsimple-bilateral.png");
 }
 
+void testToneMapping_horse() {
+
+    // load images
+    vector<Image> imSeq;
+    imSeq.push_back(gamma_code(Image("../Input/horse-1.png"), 1.0/2.2));
+    imSeq.push_back(gamma_code(Image("../Input/horse-2.png"), 1.0/2.2));
+
+    // create hdr image
+    Image hdr = makeHdrGpuBasic(imSeq);
+
+    // Note: bilaterial filtering these images takes a very long time. It is not
+    // necessary to attempt this for testing
+    Image tm = toneMap(hdr, 100, 3, 0.1);
+    tm = gamma_code(tm, 2.2);
+    tm.write("./Output/horse-tonedHDRsimple-bilateral.png");
+}
+
+void testToneMapping_nyc() {
+
+    // load images
+    vector<Image> imSeq;
+    imSeq.push_back(gamma_code(Image("../Input/nyc-1.png"), 1.0/2.2));
+    imSeq.push_back(gamma_code(Image("../Input/nyc-2.png"), 1.0/2.2));
+
+    // create hdr image
+    Image hdr = makeHdrGpuBasic(imSeq);
+
+    // Note: bilaterial filtering these images takes a very long time. It is not
+    // necessary to attempt this for testing
+    Image tm = toneMap(hdr, 100, 3, 0.1);
+    tm = gamma_code(tm, 2.2);
+    tm.write("./Output/nyc-tonedHDRsimple-bilateral.png");
+}
+
+void testToneMapping_sea() {
+
+    // load images
+    vector<Image> imSeq;
+    imSeq.push_back(gamma_code(Image("../Input/sea-1.png"), 1.0/2.2));
+    imSeq.push_back(gamma_code(Image("../Input/sea-2.png"), 1.0/2.2));
+
+    // create hdr image
+    Image hdr = makeHdrGpuBasic(imSeq);
+
+    // Note: bilaterial filtering these images takes a very long time. It is not
+    // necessary to attempt this for testing
+    Image tm = toneMap(hdr, 100, 3, 0.1);
+    tm = gamma_code(tm, 2.2);
+    tm.write("./Output/sea-tonedHDRsimple-bilateral.png");
+}
+
+void testToneMapping_vine() {
+
+    // load images
+    vector<Image> imSeq;
+    imSeq.push_back(gamma_code(Image("../Input/vine-1.png"), 1.0/2.2));
+    imSeq.push_back(gamma_code(Image("../Input/vine-2.png"), 1.0/2.2));
+    imSeq.push_back(gamma_code(Image("../Input/vine-3.png"), 1.0/2.2));
+
+    // create hdr image
+    Image hdr = makeHdrGpuBasic(imSeq);
+
+    // Note: bilaterial filtering these images takes a very long time. It is not
+    // necessary to attempt this for testing
+    Image tm = toneMap(hdr, 100, 3, 0.1);
+    tm = gamma_code(tm, 2.2);
+    tm.write("./Output/vine-tonedHDRsimple-bilateral.png");
+}
+
 int main() {
 
     // testComputeWeight();
     // testComputeFactor();
-    // testMakeHDR();
+    // testMakeHDR_GPU();
+    testToneMapping_ante1();
     testToneMapping_ante2();
     testToneMapping_ante3();
     testToneMapping_boston();
     testToneMapping_design();
+    testToneMapping_horse();
+    testToneMapping_nyc();
+    testToneMapping_sea();
+    testToneMapping_vine();
 
     return 0;
 }
