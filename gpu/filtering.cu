@@ -2,44 +2,6 @@
 #include "cuda_utils.h"
 #include "filtering.h"
 
-__device__ float im_smartAccessClamp(
-    float * const im_data,
-    int width,
-    int height,
-    int channels,
-    int x,
-    int y,
-    int z)
-{
-    // Image data is stored as z*(width*height) + y*width + x
-    // This function always clamps pixel indices, i.e. when a pixel is out of bound we use the nearest valid pixel
-
-    x = max(min(x, width - 1), 0);
-    y = max(min(y, height - 1), 0);
-    z = max(min(z, channels - 1), 0);
-
-    return im_data[z*width*height + y*width + x];
-}
-
-__device__ float im_smartAccessNoClamp(
-    float * const im_data,
-    int width,
-    int height,
-    int channels,
-    int x,
-    int y,
-    int z)
-{
-    // This function never clamps pixel indices, i.e. when a pixel is out of bound we return a black value
-
-    if ( x < 0 || y < 0 || z < 0 || x >= width || y >= height || z >= channels)
-    {
-        return 0.0f;
-    }
-
-    return im_data[z*width*height + y*width + x];
-}
-
 __global__ void bilateral_basic(
     float * const im_in,
     float * im_out,
