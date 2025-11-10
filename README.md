@@ -147,9 +147,6 @@ make clean
    - Image sequence **MUST** be ordered from **least exposed (darkest) first** to **most exposed (brightest) last**
    - Example correct order: `[underexposed.png, normal.png, overexposed.png]`
    - This ordering is critical for the weight map computation and factor estimation algorithms
-   - First image: excludes dark/noisy pixels (uses `pixelVal >= epsilonMini`)
-   - Last image: excludes bright/saturated pixels (uses `pixelVal <= epsilonMaxi`)
-   - Middle images: excludes both extremes
 
 **Why This Matters:**
 The HDR merging algorithm computes different weight maps for the first and last images in the sequence. Incorrect ordering will result in improper weighting and poor HDR quality.
@@ -163,7 +160,6 @@ The HDR merging algorithm computes different weight maps for the first and last 
 - Combines multiple exposure images into a single HDR image
 - Automatic exposure ratio detection using median-based factor computation
 - Weight-based merging that excludes over/under-exposed pixels
-- Handles 2-7 exposure sequences
 
 ### 2. Tone Mapping
 **Both:** `toneMap()` (uses CPU or GPU bilateral filter)
@@ -176,13 +172,7 @@ The HDR merging algorithm computes different weight maps for the first and last 
   - `detailAmp`: Detail amplification factor (default: 3)
   - `sigmaRange`: Bilateral filter range parameter (default: 0.1)
 
-### 3. Image Processing Operations
-- Color space conversions: RGB ↔ YUV, grayscale
-- Gamma correction (sRGB ↔ linear space)
-- Gaussian and bilateral filtering
-- Image manipulation: brightness, contrast, saturation
-
-### 4. Performance Profiling
+### 3. Performance Profiling
 - **CPU:** `std::chrono` for host-side timing
 - **GPU:** CUDA events for kernel timing + chrono for total time
 - Detailed breakdown of HDR merging and tone mapping stages
@@ -242,8 +232,6 @@ The project includes 9 test sequences with varying exposure counts and image siz
 | `testToneMapping_sea()` | sea-1, sea-2 | 2 | Medium |
 | `testToneMapping_vine()` | vine-1 through vine-3 | 3 | Medium |
 
-**Recommendation:** Test with `ante` sequences first (small/fast), then try `boston/nyc/horse/sea/vine`, and finally `design` (7 large images, bilateral filtering is very slow).
-
 ## Usage Examples
 
 ### CPU Implementation
@@ -297,8 +285,6 @@ tm = gamma_code(tm, 2.2);
 tm.write("./Output/boston-hdr-tonemapped.png");
 ```
 
-**Key Difference:** `makeHDR()` (CPU) vs `makeHdrGpuBasic()` (GPU). The `toneMap()` function automatically uses GPU bilateral filtering when running in the GPU implementation.
-
 ## Performance and Timing Output
 
 Both CPU and GPU implementations produce detailed timing output for performance comparison.
@@ -333,12 +319,6 @@ Overall timing for testToneMapping_ante2:
 ========================================
 ```
 
-**Performance Notes:**
-- GPU acceleration is most effective for large images and bilateral filtering
-- Bilateral filtering is O(n²) per pixel, making it the primary bottleneck
-- The `design` sequence (7 large images) demonstrates worst-case performance
-- Compare CPU vs GPU timing output to evaluate speedup
-
 ## Build Artifacts and Output Files
 
 ### Generated During Build
@@ -347,13 +327,6 @@ Overall timing for testToneMapping_ante2:
 - `_build/*.o` - Object files
 - `main` - Executable
 - `Output/` - Directory for output images
-
-### Generated Output Images
-
-- **Weight maps:** `ante2-w1.png`, `ante2-w2.png`
-- **Scaled HDR outputs:** `scaledHDR_design_0.png` through `scaledHDR_design_10.png`
-- **Tone-mapped results:** `[sequence]-tonedHDRsimple-bilateral.png`
-  - Examples: `ante1-tonedHDRsimple-bilateral.png`, `boston-tonedHDRsimple-bilateral.png`
 
 ## Key Implementation Details
 
@@ -380,20 +353,6 @@ Overall timing for testToneMapping_ante2:
 - 16×16 thread blocks (256 threads per block)
 - 2D grid covering entire image dimensions
 
-## Development Notes
-
-- Start testing with small image sequences (`ante1`, `ante2`) before large ones (`design`)
-- CPU implementation establishes correctness - verify GPU output matches CPU
-- Profiling identifies bilateral filtering as the primary bottleneck
-- GPU speedup varies by image size and number of exposures
-- The `design` sequence with 7 large images stresses both CPU and GPU implementations
-
-## License
-
-Educational project for JHU-605/617 GPU Programming course.
-
 ## Acknowledgments
-
-- Course: JHU-605/617 GPU Programming
 - PNG I/O: lodepng library
 - Target GPU: Nvidia Tesla T4 (AWS g4dn instance)
