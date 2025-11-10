@@ -146,7 +146,7 @@ Image bilateralGpuBasic(const Image & im, float sigmaRange, float sigmaDomain, f
     CUDA_CHECK(cudaMalloc((void **)&im_out_d, im_num_pixel * sizeof(float)));
 
     // H->D
-    CUDA_CHECK(cudaMemcpy(im_d, im.data(), im_num_pixel * sizeof(float), cudaMemcpyHostToDevice));
+    CUDA_CHECK(cudaMemcpy(im_d, &im(0), im_num_pixel * sizeof(float), cudaMemcpyHostToDevice));
     
     // Launch kernel
     bilateral_basic<<<blocksPerGrid, threadsPerBlock>>>(
@@ -162,7 +162,7 @@ Image bilateralGpuBasic(const Image & im, float sigmaRange, float sigmaDomain, f
     CUDA_CHECK_KERNEL();
 
     // D->H
-    CUDA_CHECK(cudaMemcpy(imFilter.data(), im_out_d, im_num_pixel * sizeof(float), cudaMemcpyDeviceToHost));
+    CUDA_CHECK(cudaMemcpy(&imFilter(0), im_out_d, im_num_pixel * sizeof(float), cudaMemcpyDeviceToHost));
 
     // Clean up
     cudaFree(im_d);
