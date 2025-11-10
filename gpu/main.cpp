@@ -100,7 +100,7 @@ void testToneMapping_ante3() {
     imSeq.push_back(gamma_code(Image("../Input/ante3-4.png"), 1.0/2.2));
 
     // create hdr image
-    Image hdr = makeHDR(imSeq);
+    Image hdr = makeHdrGpuBasic(imSeq);
 
     // tone map with bilaterial
     Image tm = toneMap(hdr, 100, 3, 0.1);
@@ -119,7 +119,7 @@ void testToneMapping_boston() {
     imSeq.push_back(gamma_code(Image("../Input/boston-3.png"), 1.0/2.2));
 
     // create hdr image
-    Image hdr = makeHDR(imSeq);
+    Image hdr = makeHdrGpuBasic(imSeq);
 
     // tone map with bilaterial
     Image tm = toneMap(hdr, 100, 3, 0.1);
@@ -140,7 +140,7 @@ void testToneMapping_design() {
     imSeq.push_back(gamma_code(Image("../Input/design-7.png"), 1.0/2.2));
 
     // create hdr image
-    Image hdr = makeHDR(imSeq);
+    Image hdr = makeHdrGpuBasic(imSeq);
 
     // Note: bilaterial filtering these images takes a very long time. It is not
     // necessary to attempt this for testing
@@ -153,11 +153,11 @@ int main() {
 
     // testComputeWeight();
     // testComputeFactor();
-    testMakeHDR();
+    // testMakeHDR();
     testToneMapping_ante2();
-    // testToneMapping_ante3();
-    // testToneMapping_boston();
-    // testToneMapping_design();
+    testToneMapping_ante3();
+    testToneMapping_boston();
+    testToneMapping_design();
 
     return 0;
 }
