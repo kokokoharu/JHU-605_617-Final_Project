@@ -51,8 +51,8 @@ void testMakeHDR() {
     imSeq.push_back(gamma_code(Image("../Input/design-7.png"), 1.0/2.2));
 
     // generate an hdr image
-    Image hdr = makeHDR(imSeq);
-    //hdr.write("./Output/hdr_image");
+    Image hdr = makeHdrGpuBasic(imSeq);
+    hdr.write("./Output/hdr_image");
 
     // save out images clipped to different ranges.
     float maxVal = hdr.max();
@@ -80,7 +80,7 @@ void testToneMapping_ante2() {
     imSeq.push_back(gamma_code(Image("../Input/ante2-2.png"), 1.0/2.2));
 
     // create hdr image
-    Image hdr = makeHDR(imSeq);
+    Image hdr = makeHdrGpuBasic(imSeq);
 
     // tone map with bilaterial
     Image tm = toneMap(hdr, 100, 3, 0.1);
@@ -153,7 +153,7 @@ int main() {
 
     // testComputeWeight();
     // testComputeFactor();
-    // testMakeHDR();
+    testMakeHDR();
     testToneMapping_ante2();
     // testToneMapping_ante3();
     // testToneMapping_boston();

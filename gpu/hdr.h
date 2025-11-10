@@ -12,6 +12,7 @@ using namespace std;
 Image computeWeight(const Image &im, float epsilonMini=0.002, float epsilonMaxi=0.99);
 float computeFactor(const Image &im1, const Image &w1, const Image &im2, const Image &w2);
 Image makeHDR(vector<Image> &imSeq, float epsilonMini=0.002, float epsilonMaxi=0.99);
+Image makeHdrGpuBasic(vector<Image> &imSeq, float epsilonMini=0.002, float epsilonMaxi=0.99);
 
 // Tone Mapping
 Image toneMap(const Image &im, float targetBase=100, float detailAmp=3, float sigmaRange=0.1);
