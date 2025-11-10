@@ -155,9 +155,9 @@ int main() {
     // testComputeFactor();
     // testMakeHDR();
     testToneMapping_ante2();
-    // testToneMapping_ante3();
-    // testToneMapping_boston();
-    // testToneMapping_design();
+    testToneMapping_ante3();
+    testToneMapping_boston();
+    testToneMapping_design();
 
     return 0;
 }
