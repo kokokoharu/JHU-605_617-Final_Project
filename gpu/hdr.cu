@@ -1,6 +1,9 @@
 #include <cuda_runtime.h>
+#include <iostream>
 #include "cuda_utils.h"
 #include "hdr.h"
+
+using namespace std;
 
 __global__ void computeWeightGpu(
     float * const im,
@@ -97,6 +100,12 @@ Image makeHdrGpuBasic(vector<Image> &imSeq, float epsilonMini, float epsilonMaxi
         return imSeq[0];
     }
 
+    // Timing
+    TimePoint t_start_total = now();
+    float t_weight_gpu = 0.0f;
+    float t_merge_gpu = 0.0f;
+    double t_factor_cpu = 0.0;
+
     // Host definitions
     int N = imSeq.size();
     int width = imSeq[0].width();
@@ -136,6 +145,8 @@ Image makeHdrGpuBasic(vector<Image> &imSeq, float epsilonMini, float epsilonMaxi
         bool isFirst = i == 0;
         bool isLast = i == (N - 1);
 
+        CudaTimer timer_weight;
+        timer_weight.start();
         computeWeightGpu<<<blocksPerGrid, threadsPerBlock>>>(
             imSeq_d[i],
             weightMaps_d[i],
@@ -147,11 +158,15 @@ Image makeHdrGpuBasic(vector<Image> &imSeq, float epsilonMini, float epsilonMaxi
             isFirst,
             isLast
         );
+        timer_weight.stop();
+        t_weight_gpu += timer_weight.elapsed();
     }
 
     CUDA_CHECK_KERNEL();
 
     // Download weights and compute relative exposure factors on host
+    TimePoint t_start_factor = now();
+
     // Set up for the 1st image
     factors_h[0] = 1.0f;
     Image w_prev(width, height, channels);
@@ -165,6 +180,9 @@ Image makeHdrGpuBasic(vector<Image> &imSeq, float epsilonMini, float epsilonMaxi
         factors_h[i] = current_ratio * factors_h[i-1];
         w_prev = w_curr;
     }
+
+    TimePoint t_end_factor = now();
+    t_factor_cpu = elapsed_ms(t_start_factor, t_end_factor);
 
     // Upload relative exposure factors
     CUDA_CHECK(cudaMalloc((void **)&factors_d, N * sizeof(float)));
@@ -180,6 +198,9 @@ Image makeHdrGpuBasic(vector<Image> &imSeq, float epsilonMini, float epsilonMaxi
     // Allocate device memory for output HDR image and launch kernel
     CUDA_CHECK(cudaMalloc((void **)&hdr_d, im_num_pixel * sizeof(float)));
     CUDA_CHECK(cudaMemset(hdr_d, 0, im_num_pixel * sizeof(float)));
+
+    CudaTimer timer_merge;
+    timer_merge.start();
     hdrMergeGpu<<<blocksPerGrid, threadsPerBlock>>>(
         imSeq_d_ptr,
         weightMaps_d_ptr,
@@ -190,6 +211,8 @@ Image makeHdrGpuBasic(vector<Image> &imSeq, float epsilonMini, float epsilonMaxi
         channels,
         N
     );
+    timer_merge.stop();
+    t_merge_gpu = timer_merge.elapsed();
 
     CUDA_CHECK_KERNEL();
 
@@ -206,6 +229,16 @@ Image makeHdrGpuBasic(vector<Image> &imSeq, float epsilonMini, float epsilonMaxi
     cudaFree(weightMaps_d_ptr);
     cudaFree(factors_d);
     cudaFree(hdr_d);
-    
+
+    // Timing output
+    TimePoint t_end_total = now();
+    double t_total = elapsed_ms(t_start_total, t_end_total);
+
+    cout << "makeHdrGpuBasic timings:" << endl;
+    cout << "  GPU weight calculations: " << t_weight_gpu << " ms" << endl;
+    cout << "  CPU factor calculations: " << t_factor_cpu << " ms" << endl;
+    cout << "  GPU merging: " << t_merge_gpu << " ms" << endl;
+    cout << "  Total: " << t_total << " ms" << endl;
+
     return hdr;
 }

@@ -1,6 +1,9 @@
 #include <cuda_runtime.h>
+#include <iostream>
 #include "cuda_utils.h"
 #include "filtering.h"
+
+using namespace std;
 
 __global__ void bilateral_basic(
     float * const im_in,
@@ -88,6 +91,9 @@ __global__ void bilateral_basic(
 
 Image bilateralGpuBasic(const Image & im, float sigmaRange, float sigmaDomain, float truncateDomain)
 {
+    // Timing
+    TimePoint t_start_total = now();
+
     // Output image
     Image imFilter(im.width(), im.height(), im.channels());
 
@@ -109,8 +115,10 @@ Image bilateralGpuBasic(const Image & im, float sigmaRange, float sigmaDomain, f
 
     // H->D
     CUDA_CHECK(cudaMemcpy(im_d, &im(0), im_num_pixel * sizeof(float), cudaMemcpyHostToDevice));
-    
-    // Launch kernel
+
+    // Launch kernel with timing
+    CudaTimer timer_kernel;
+    timer_kernel.start();
     bilateral_basic<<<blocksPerGrid, threadsPerBlock>>>(
         im_d,
         im_out_d,
@@ -120,6 +128,7 @@ Image bilateralGpuBasic(const Image & im, float sigmaRange, float sigmaDomain, f
         sigmaRange,
         sigmaDomain,
         truncateDomain);
+    timer_kernel.stop();
 
     CUDA_CHECK_KERNEL();
 
@@ -129,6 +138,14 @@ Image bilateralGpuBasic(const Image & im, float sigmaRange, float sigmaDomain, f
     // Clean up
     cudaFree(im_d);
     cudaFree(im_out_d);
+
+    // Timing output
+    TimePoint t_end_total = now();
+    double t_total = elapsed_ms(t_start_total, t_end_total);
+
+    cout << "bilateralGpuBasic timings:" << endl;
+    cout << "  GPU kernel: " << timer_kernel.elapsed() << " ms" << endl;
+    cout << "  Total: " << t_total << " ms" << endl;
 
     return imFilter;
 }

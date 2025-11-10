@@ -1,8 +1,9 @@
 #include "hdr.h"
 #include "filtering.h"
+#include "cuda_utils.h"
 #include <math.h>
 #include <algorithm>
-
+#include <iostream>
 
 using namespace std;
 
@@ -202,39 +203,86 @@ Image toneMap(const Image &im, float targetBase, float detailAmp, float sigmaRan
     // - Split the image into its luminance-chrominance components.
     // - Work in the log10 domain for the luminance
 
+    // Timing
+    TimePoint t_start_total = now();
+    TimePoint t_start, t_end;
+
     // Step 1: lumiChromi
+    t_start = now();
     vector<Image> lc = lumiChromi(im);
     Image lumi = lc[0];
     Image chromi = lc[1];
+    t_end = now();
+    double t_lumiChromi = elapsed_ms(t_start, t_end);
 
     // Step 2: convert to log domain
+    t_start = now();
     Image log_lumi = log10Image(lumi);
+    t_end = now();
+    double t_log10Image = elapsed_ms(t_start, t_end);
 
     // Step 3: find domain standard deviation
+    t_start = now();
     int largest;
     im.channels()<im.width() ? largest=im.width() : largest=im.channels();
     im.width()<im.height() ? largest=im.height() : largest=im.width();
     float sigmaDomain = largest/(float)50;
+    t_end = now();
+    double t_sigmaDomain = elapsed_ms(t_start, t_end);
 
     // Step 4: find base (low freq)
+    t_start = now();
     Image base(log_lumi.width(),log_lumi.height(),log_lumi.channels());
     base = bilateralGpuBasic(log_lumi, sigmaRange, sigmaDomain);
+    t_end = now();
+    double t_bilateral = elapsed_ms(t_start, t_end);
 
     // Step 5: find detail (high freq)
+    t_start = now();
     Image detail = log_lumi - base;
+    t_end = now();
+    double t_detail = elapsed_ms(t_start, t_end);
 
     // Step 6: find scale factor
+    t_start = now();
     float k;    // k = lg(target)/(baseMax-baseMin)
     k = log10(targetBase)/(base.max()-base.min());
+    t_end = now();
+    double t_scaleFactor = elapsed_ms(t_start, t_end);
 
     // Step 7: new log-luminance
+    t_start = now();
     Image new_log_lumi = detailAmp*detail + k*(base-base.max());
+    t_end = now();
+    double t_newLogLumi = elapsed_ms(t_start, t_end);
 
     // Step 8: convert back to linear domain
+    t_start = now();
     Image new_lumi = exp10Image(new_log_lumi);
+    t_end = now();
+    double t_exp10Image = elapsed_ms(t_start, t_end);
 
     // Step 9: back to rgb
+    t_start = now();
     Image result = lumiChromi2rgb(vector<Image>{new_lumi, chromi});
+    t_end = now();
+    double t_lumiChromi2rgb = elapsed_ms(t_start, t_end);
+
+    // Timing output
+    TimePoint t_end_total = now();
+    double t_total = elapsed_ms(t_start_total, t_end_total);
+
+    cout << "toneMap timings:" << endl;
+    cout << "  lumiChromi: " << t_lumiChromi << " ms" << endl;
+    cout << "  log10Image: " << t_log10Image << " ms" << endl;
+    cout << "  sigmaDomain calc: " << t_sigmaDomain << " ms" << endl;
+    cout << "  bilateral: " << t_bilateral << " ms" << endl;
+    cout << "  detail computation: " << t_detail << " ms" << endl;
+    cout << "  scale factor k: " << t_scaleFactor << " ms" << endl;
+    cout << "  new_log_lumi: " << t_newLogLumi << " ms" << endl;
+    cout << "  exp10Image: " << t_exp10Image << " ms" << endl;
+    cout << "  lumiChromi2rgb: " << t_lumiChromi2rgb << " ms" << endl;
+    cout << "  Total: " << t_total << " ms" << endl;
 
     return result;
 

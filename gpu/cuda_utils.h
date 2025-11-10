@@ -4,6 +4,7 @@
 #include <cuda_runtime.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <chrono>
 
 // Macro to check CUDA errors
 #define CUDA_CHECK(call) \
@@ -32,6 +33,51 @@
             exit(EXIT_FAILURE); \
         } \
     } while(0)
+
+// Timing utilities
+// CudaTimer class for GPU kernel timing using CUDA events
+class CudaTimer {
+private:
+    cudaEvent_t start_event;
+    cudaEvent_t stop_event;
+    float milliseconds;
+
+public:
+    CudaTimer() : milliseconds(0.0f) {
+        CUDA_CHECK(cudaEventCreate(&start_event));
+        CUDA_CHECK(cudaEventCreate(&stop_event));
+    }
+
+    ~CudaTimer() {
+        cudaEventDestroy(start_event);
+        cudaEventDestroy(stop_event);
+    }
+
+    void start() {
+        CUDA_CHECK(cudaEventRecord(start_event));
+    }
+
+    void stop() {
+        CUDA_CHECK(cudaEventRecord(stop_event));
+        CUDA_CHECK(cudaEventSynchronize(stop_event));
+        CUDA_CHECK(cudaEventElapsedTime(&milliseconds, start_event, stop_event));
+    }
+
+    float elapsed() const {
+        return milliseconds;
+    }
+};
+
+// Host-side timing using chrono (for non-GPU operations and total timing)
+typedef std::chrono::high_resolution_clock::time_point TimePoint;
+
+inline TimePoint now() {
+    return std::chrono::high_resolution_clock::now();
+}
+
+inline double elapsed_ms(TimePoint start, TimePoint end) {
+    return std::chrono::duration<double, std::milli>(end - start).count();
+}
 
 // Device-side image accessor and setter functions
 // These are inline to avoid multiple definition errors when included in multiple .cu files
