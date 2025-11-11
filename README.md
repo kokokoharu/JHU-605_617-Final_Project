@@ -297,16 +297,16 @@ Both CPU and GPU implementations produce detailed timing output for performance 
 ========== testToneMapping_ante2 ==========
 
 === makeHDR ===
-  **Total weight calculations (GPU): 0.185024 ms**
+  Total weight calculations (GPU): 0.185024 ms
   Total factor calculations: 32.7831 ms
-  **Merging (GPU): 0.243008 ms**
+  Merging (GPU): 0.243008 ms
 Total makeHDR: 36.599 ms
 
 === toneMap (bilateral) ===
   lumiChromi: 21.4955 ms
   log10Image: 8.50029 ms
   sigmaDomain calc: 7.9e-05 ms
-  **bilateral (GPU): 223.921 ms**
+  bilateral (GPU): 223.921 ms
   detail computation: 3.67971 ms
   scale factor k: 3.8495 ms
   new_log_lumi: 14.2782 ms
