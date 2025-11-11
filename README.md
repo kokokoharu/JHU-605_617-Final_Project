@@ -1,6 +1,6 @@
 # High Dynamic Range (HDR) Image Processing
 
-**JHU-605/617 GPU Programming Course - Final Project**
+**JHU 605.617 Introduction to GPU Programming - Final Project**
 
 ## Overview
 
@@ -138,10 +138,12 @@ make clean
 
 **⚠️ Critical:** The HDR algorithm makes the following assumptions about input images:
 
-1. **Linear Encoding:**
-   - Input images should be in **linear light space** (not gamma-encoded)
-   - If images are in sRGB space (gamma-encoded), they must be linearized using `gamma_code(im, 1.0/2.2)` before HDR processing
-   - Output images must be converted back to sRGB using `gamma_code(result, 2.2)` before saving
+1. **sRGB Input Images:**
+   - Input PNG files should be in **sRGB color space** (gamma-encoded) - this is the standard for PNG/JPG images
+   - The code automatically linearizes images using `gamma_code(im, 1.0/2.2)` after loading
+   - HDR processing is performed in **linear light space** where pixel values are proportional to actual light intensity
+   - Results are converted back to sRGB using `gamma_code(result, 2.2)` before saving
+   - **Do not pre-linearize your input images** - provide standard sRGB PNGs
 
 2. **Exposure Ordering:**
    - Image sequence **MUST** be ordered from **least exposed (darkest) first** to **most exposed (brightest) last**
@@ -289,22 +291,50 @@ tm.write("./Output/boston-hdr-tonemapped.png");
 
 Both CPU and GPU implementations produce detailed timing output for performance comparison.
 
-### Example Output Format
+### Example Output Format (GPU)
 
 ```
 ========== testToneMapping_ante2 ==========
 
 === makeHDR ===
-  Total weight calculations (GPU): 40.5468 ms
+  **Total weight calculations (GPU): 0.185024 ms**
+  Total factor calculations: 32.7831 ms
+  **Merging (GPU): 0.243008 ms**
+Total makeHDR: 36.599 ms
+
+=== toneMap (bilateral) ===
+  lumiChromi: 21.4955 ms
+  log10Image: 8.50029 ms
+  sigmaDomain calc: 7.9e-05 ms
+  **bilateral (GPU): 223.921 ms**
+  detail computation: 3.67971 ms
+  scale factor k: 3.8495 ms
+  new_log_lumi: 14.2782 ms
+  exp10Image: 7.25022 ms
+  lumiChromi2rgb: 17.5175 ms
+Total toneMap (bilateral): 300.494 ms
+
+========================================
+Overall timing for testToneMapping_ante2:
+  makeHDR: 36.8975 ms
+  toneMap: 300.567 ms
+========================================
+```
+
+### Example Output Format (CPU)
+
+```
+=== makeHDR ===
+  Total weight calculations: 40.5468 ms
   Total factor calculations: 31.1561 ms
-  Merging (GPU): 71.5817 ms
+  Merging: 71.5817 ms
 Total makeHDR: 143.285 ms
 
 === toneMap (bilateral) ===
   lumiChromi: 24.703 ms
   log10Image: 8.84294 ms
   sigmaDomain calc: 0.00016 ms
-  bilateral (GPU): 32969.4 ms
+  bilateral: 32969.4 ms
   detail computation: 3.78256 ms
   scale factor k: 3.98365 ms
   new_log_lumi: 13.9948 ms
@@ -315,7 +345,8 @@ Total toneMap (bilateral): 33048.7 ms
 ========================================
 Overall timing for testToneMapping_ante2:
   makeHDR: 149.642 ms
-  toneMap: 33049 ms
+  toneMap (Gaussian): 459.986 ms
+  toneMap (bilateral): 33049 ms
 ========================================
 ```
 
@@ -354,5 +385,5 @@ Overall timing for testToneMapping_ante2:
 - 2D grid covering entire image dimensions
 
 ## Acknowledgments
-- PNG I/O: lodepng library
+- PNG I/O: [lodepng library](https://github.com/lvandeve/lodepng)
 - Target GPU: Nvidia Tesla T4 (AWS g4dn instance)
