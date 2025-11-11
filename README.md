@@ -345,7 +345,6 @@ Total toneMap (bilateral): 33048.7 ms
 ========================================
 Overall timing for testToneMapping_ante2:
   makeHDR: 149.642 ms
-  toneMap (Gaussian): 459.986 ms
   toneMap (bilateral): 33049 ms
 ========================================
 ```
