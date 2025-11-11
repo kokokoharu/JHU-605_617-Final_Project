@@ -26,7 +26,6 @@ public:
     const float & operator()(int x, int y) const;
     float & operator()(int x, int y);
 
-// The following are functions and variables that are not accessible from outside the class
 private:
     std::vector<float> kernel;
     int width;
