@@ -26,11 +26,15 @@ public:
     const float & operator()(int x, int y) const;
     float & operator()(int x, int y);
 
+// The following are functions and variables that are not accessible from outside the class
 private:
     std::vector<float> kernel;
     int width;
     int height;
 };
+
+// Bilaterial Filtering
+//Image bilateral(const Image &im, float sigmaRange=0.1, float sigmaDomain=1.0, float truncateDomain=3.0, bool clamp=true);
 
 // GPU bilateral filtering
 Image bilateralGpuBasic(const Image & im, float sigmaRange = 0.1, float sigmaDomain = 1.0, float truncateDomain = 3.0);
