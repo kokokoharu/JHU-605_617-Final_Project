@@ -15,8 +15,7 @@ The dual implementation approach allows direct performance comparison between CP
 
 ```
 JHU-605_617-Final_Project/
-├── README.md              # This file
-├── CLAUDE.md              # Project documentation
+├── README.md              # Project documentation
 ├── Input/                 # Shared input images (27 PNG files across 9 sequences)
 │   ├── ante1-1.png, ante1-2.png        # 2 exposures
 │   ├── ante2-1.png, ante2-2.png        # 2 exposures
