@@ -1,4 +1,4 @@
-# High Dynamic Range (HDR) Image Processing
+# High Dynamic Range (HDR) Image Processing with CUDA
 
 **JHU 605.617 Introduction to GPU Programming - Final Project**
 
