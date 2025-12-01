@@ -63,10 +63,10 @@ __global__ void bilateral_tiled_with_l2_cache(
 
                         // Find distance with a neighbor
                         // If neighbor is inside input tile, get its value from shared memory
-                        if (threadIdx.x - filter_radius + xFilter >= 0
-                            && threadIdx.x - filter_radius + xFilter < BILA_TILE_DIM
-                            && threadIdx.y - filter_radius + yFilter >= 0
-                            && threadIdx.y - filter_radius + yFilter < BILA_TILE_DIM)
+                        if ((int)threadIdx.x - filter_radius + xFilter >= 0
+                            && (int)threadIdx.x - filter_radius + xFilter < BILA_TILE_DIM
+                            && (int)threadIdx.y - filter_radius + yFilter >= 0
+                            && (int)threadIdx.y - filter_radius + yFilter < BILA_TILE_DIM)
                         {
                             tmp -= tile_in[z1][threadIdx.y-filter_radius+yFilter][threadIdx.x-filter_radius+xFilter];
                         }
@@ -93,10 +93,10 @@ __global__ void bilateral_tiled_with_l2_cache(
 
                     normalizer += factorDomain * factorRange;
 
-                    if (threadIdx.x - filter_radius + xFilter >= 0
-                            && threadIdx.x - filter_radius + xFilter < BILA_TILE_DIM
-                            && threadIdx.y - filter_radius + yFilter >= 0
-                            && threadIdx.y - filter_radius + yFilter < BILA_TILE_DIM)
+                    if ((int)threadIdx.x - filter_radius + xFilter >= 0
+                        && (int)threadIdx.x - filter_radius + xFilter < BILA_TILE_DIM
+                        && (int)threadIdx.y - filter_radius + yFilter >= 0
+                        && (int)threadIdx.y - filter_radius + yFilter < BILA_TILE_DIM)
                     {
                         accum += factorDomain * factorRange * tile_in[z][threadIdx.y-filter_radius+yFilter][threadIdx.x-filter_radius+xFilter];
                     }
