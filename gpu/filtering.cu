@@ -12,7 +12,7 @@ using namespace std;
 #define BILA_TILE_TRUNC_DOMAIN                  (3.0f)
 
 // Switch between basic bilateral kernel and tiled bilateral kernel
-#define USE_TILE_BILA                           (1)
+#define USE_TILE_BILA                           (0)
 
 // A tiled bilateral filtering kernel with L2 caching of the halo cells.
 // We access halo cells from global memory and hope they are cached in L2, especially for those halo cells internal to other tiles.
