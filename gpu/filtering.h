@@ -32,9 +32,6 @@ private:
     int height;
 };
 
-// Bilaterial Filtering
-//Image bilateral(const Image &im, float sigmaRange=0.1, float sigmaDomain=1.0, float truncateDomain=3.0, bool clamp=true);
-
 // GPU bilateral filtering
 Image bilateralGpuBasic(const Image & im, float sigmaRange = 0.1, float sigmaDomain = 1.0, float truncateDomain = 3.0);
 
