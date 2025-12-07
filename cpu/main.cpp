@@ -71,6 +71,35 @@ void testMakeHDR() {
 
 }
 
+void testToneMapping_ante1() {
+
+    // load images
+    vector<Image> imSeq;
+    imSeq.push_back(gamma_code(Image("../Input/ante1-1.png"), 1.0/2.2));
+    imSeq.push_back(gamma_code(Image("../Input/ante1-2.png"), 1.0/2.2));
+
+    // create hdr image
+    auto start = chrono::high_resolution_clock::now();
+    Image hdr = makeHDR(imSeq);
+    auto end = chrono::high_resolution_clock::now();
+    double makeHDR_time = chrono::duration<double, milli>(end - start).count();
+
+    // tone map with bilaterial
+    start = chrono::high_resolution_clock::now();
+    Image tm = toneMap(hdr, 100, 3, 0.1);
+    end = chrono::high_resolution_clock::now();
+    double toneMap_bilateral_time = chrono::duration<double, milli>(end - start).count();
+    tm = gamma_code(tm, 2.2);
+    tm.write("./Output/ante1-tonedHDRsimple-bilateral.png");
+
+    cout << "========================================" << endl;
+    cout << "Overall timing for testToneMapping_ante1:" << endl;
+    cout << "  makeHDR: " << makeHDR_time << " ms" << endl;
+    cout << "  toneMap (bilateral): " << toneMap_bilateral_time << " ms" << endl;
+    cout << "========================================" << endl;
+
+}
+
 // HDR and Tone Mapping on Ante2 images
 void testToneMapping_ante2() {
 
@@ -198,15 +227,141 @@ void testToneMapping_design() {
     cout << "========================================" << endl;
 }
 
+void testToneMapping_horse() {
+
+    // load images
+    vector<Image> imSeq;
+    imSeq.push_back(gamma_code(Image("../Input/horse-1.png"), 1.0/2.2));
+    imSeq.push_back(gamma_code(Image("../Input/horse-2.png"), 1.0/2.2));
+
+    // create hdr image
+    auto start = chrono::high_resolution_clock::now();
+    Image hdr = makeHDR(imSeq);
+    auto end = chrono::high_resolution_clock::now();
+    double makeHDR_time = chrono::duration<double, milli>(end - start).count();
+
+    // Note: bilaterial filtering these images takes a very long time. It is not
+    // necessary to attempt this for testing
+    // tone map with bilaterial
+    start = chrono::high_resolution_clock::now();
+    Image tm = toneMap(hdr, 100, 3, 0.1);
+    end = chrono::high_resolution_clock::now();
+    double toneMap_bilateral_time = chrono::duration<double, milli>(end - start).count();
+    tm = gamma_code(tm, 2.2);
+    tm.write("./Output/horse-tonedHDRsimple-bilateral.png");
+
+    cout << "========================================" << endl;
+    cout << "Overall timing for testToneMapping_horse:" << endl;
+    cout << "  makeHDR: " << makeHDR_time << " ms" << endl;
+    cout << "  toneMap (bilateral): " << toneMap_bilateral_time << " ms" << endl;
+    cout << "========================================" << endl;
+}
+
+void testToneMapping_nyc() {
+
+    // load images
+    vector<Image> imSeq;
+    imSeq.push_back(gamma_code(Image("../Input/nyc-1.png"), 1.0/2.2));
+    imSeq.push_back(gamma_code(Image("../Input/nyc-2.png"), 1.0/2.2));
+
+    // create hdr image
+    auto start = chrono::high_resolution_clock::now();
+    Image hdr = makeHDR(imSeq);
+    auto end = chrono::high_resolution_clock::now();
+    double makeHDR_time = chrono::duration<double, milli>(end - start).count();
+
+    // Note: bilaterial filtering these images takes a very long time. It is not
+    // necessary to attempt this for testing
+    // tone map with bilaterial
+    start = chrono::high_resolution_clock::now();
+    Image tm = toneMap(hdr, 100, 3, 0.1);
+    end = chrono::high_resolution_clock::now();
+    double toneMap_bilateral_time = chrono::duration<double, milli>(end - start).count();
+    tm = gamma_code(tm, 2.2);
+    tm.write("./Output/nyc-tonedHDRsimple-bilateral.png");
+
+    cout << "========================================" << endl;
+    cout << "Overall timing for testToneMapping_nyc:" << endl;
+    cout << "  makeHDR: " << makeHDR_time << " ms" << endl;
+    cout << "  toneMap (bilateral): " << toneMap_bilateral_time << " ms" << endl;
+    cout << "========================================" << endl;
+}
+
+void testToneMapping_sea() {
+
+    // load images
+    vector<Image> imSeq;
+    imSeq.push_back(gamma_code(Image("../Input/sea-1.png"), 1.0/2.2));
+    imSeq.push_back(gamma_code(Image("../Input/sea-2.png"), 1.0/2.2));
+
+    // create hdr image
+    auto start = chrono::high_resolution_clock::now();
+    Image hdr = makeHDR(imSeq);
+    auto end = chrono::high_resolution_clock::now();
+    double makeHDR_time = chrono::duration<double, milli>(end - start).count();
+
+    // Note: bilaterial filtering these images takes a very long time. It is not
+    // necessary to attempt this for testing
+    // tone map with bilaterial
+    start = chrono::high_resolution_clock::now();
+    Image tm = toneMap(hdr, 100, 3, 0.1);
+    end = chrono::high_resolution_clock::now();
+    double toneMap_bilateral_time = chrono::duration<double, milli>(end - start).count();
+    tm = gamma_code(tm, 2.2);
+    tm.write("./Output/sea-tonedHDRsimple-bilateral.png");
+
+    cout << "========================================" << endl;
+    cout << "Overall timing for testToneMapping_sea:" << endl;
+    cout << "  makeHDR: " << makeHDR_time << " ms" << endl;
+    cout << "  toneMap (bilateral): " << toneMap_bilateral_time << " ms" << endl;
+    cout << "========================================" << endl;
+}
+
+void testToneMapping_sea() {
+
+    // load images
+    vector<Image> imSeq;
+    imSeq.push_back(gamma_code(Image("../Input/vine-1.png"), 1.0/2.2));
+    imSeq.push_back(gamma_code(Image("../Input/vine-2.png"), 1.0/2.2));
+    imSeq.push_back(gamma_code(Image("../Input/vine-3.png"), 1.0/2.2));
+
+    // create hdr image
+    auto start = chrono::high_resolution_clock::now();
+    Image hdr = makeHDR(imSeq);
+    auto end = chrono::high_resolution_clock::now();
+    double makeHDR_time = chrono::duration<double, milli>(end - start).count();
+
+    // Note: bilaterial filtering these images takes a very long time. It is not
+    // necessary to attempt this for testing
+    // tone map with bilaterial
+    start = chrono::high_resolution_clock::now();
+    Image tm = toneMap(hdr, 100, 3, 0.1);
+    end = chrono::high_resolution_clock::now();
+    double toneMap_bilateral_time = chrono::duration<double, milli>(end - start).count();
+    tm = gamma_code(tm, 2.2);
+    tm.write("./Output/vine-tonedHDRsimple-bilateral.png");
+
+    cout << "========================================" << endl;
+    cout << "Overall timing for testToneMapping_vine:" << endl;
+    cout << "  makeHDR: " << makeHDR_time << " ms" << endl;
+    cout << "  toneMap (bilateral): " << toneMap_bilateral_time << " ms" << endl;
+    cout << "========================================" << endl;
+}
+
 int main() {
 
     // testComputeWeight();
     // testComputeFactor();
     // testMakeHDR();
+    testToneMapping_ante1();
     testToneMapping_ante2();
-    // testToneMapping_ante3();
-    // testToneMapping_boston();
-    // testToneMapping_design();
+    testToneMapping_ante3();
+    testToneMapping_boston();
+    testToneMapping_design();
+    testToneMapping_horse();
+    testToneMapping_nyc();
+    testToneMapping_sea();
+    testToneMapping_vine();
 
     return 0;
 }
