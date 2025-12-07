@@ -233,7 +233,7 @@ Image toneMap(const Image &im, float targetBase, float detailAmp, float sigmaRan
     // Step 4: find base (low freq)
     t_start = now();
     Image base(log_lumi.width(),log_lumi.height(),log_lumi.channels());
-    base = bilateralGpuBasic(log_lumi, sigmaRange, sigmaDomain);
+    base = bilateralGpuBasic(log_lumi, 0.1f, 1.0f, 3.0f);
     t_end = now();
     double t_bilateral = elapsed_ms(t_start, t_end);
 

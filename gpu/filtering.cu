@@ -6,13 +6,13 @@
 using namespace std;
 
 // Hard-code the following values for tiled bilateral filtering
-#define BILA_TILE_DIM                           (32)
+#define BILA_TILE_DIM                           (16)
 #define BILA_TILE_SIG_RANGE                     (0.1f)
 #define BILA_TILE_SIG_DOMAIN                    (1.0f)
 #define BILA_TILE_TRUNC_DOMAIN                  (3.0f)
 
 // Switch between basic bilateral kernel and tiled bilateral kernel
-#define USE_TILE_BILA                           (0)
+#define USE_TILE_BILA                           (1)
 
 // A tiled bilateral filtering kernel with L2 caching of the halo cells.
 // We access halo cells from global memory and hope they are cached in L2, especially for those halo cells internal to other tiles.
