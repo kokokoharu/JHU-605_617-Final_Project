@@ -6,7 +6,7 @@
 using namespace std;
 
 // Hard-code the following values for tiled bilateral filtering
-#define BILA_TILE_DIM                           (16)
+#define BILA_TILE_DIM                           (32)
 #define BILA_TILE_SIG_RANGE                     (0.1f)
 #define BILA_TILE_SIG_DOMAIN                    (1.0f)
 #define BILA_TILE_TRUNC_DOMAIN                  (3.0f)
@@ -215,8 +215,8 @@ Image bilateralGpuBasic(const Image & im, float sigmaRange, float sigmaDomain, f
     }
     else
     {
-        threadsPerBlock_x = 16;
-        threadsPerBlock_y = 16;
+        threadsPerBlock_x = 32;
+        threadsPerBlock_y = 32;
     }
     unsigned int blocksPerGrid_x = (im.width() + threadsPerBlock_x - 1) / threadsPerBlock_x;
     unsigned int blocksPerGrid_y = (im.height() + threadsPerBlock_y - 1) / threadsPerBlock_y;
