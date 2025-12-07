@@ -317,7 +317,7 @@ void testToneMapping_sea() {
     cout << "========================================" << endl;
 }
 
-void testToneMapping_sea() {
+void testToneMapping_vine() {
 
     // load images
     vector<Image> imSeq;
