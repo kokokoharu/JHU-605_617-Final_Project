@@ -56,8 +56,8 @@ tests: $(TESTS)
 # nvcc can link both CUDA and C++ object files
 # If .o files are not available, then the rules for creating .o files are run.
 
-$(EXECUTABLE): $(BUILD_DIR)/main.o $(BUILD_DIR)/hdr.o $(BUILD_DIR)/hdr_cu.o $(BUILD_DIR)/basicImageManipulation.o $(BUILD_DIR)/filtering.o $(BUILD_DIR)/filtering_cu.o $(BUILD_DIR)/Image.o $(BUILD_DIR)/lodepng.o
-	$(NVCC) $(NVCC_FLAGS) $(BUILD_DIR)/main.o $(BUILD_DIR)/hdr.o $(BUILD_DIR)/hdr_cu.o $(BUILD_DIR)/basicImageManipulation.o $(BUILD_DIR)/filtering.o $(BUILD_DIR)/filtering_cu.o $(BUILD_DIR)/Image.o $(BUILD_DIR)/lodepng.o -o $(EXECUTABLE)
+$(EXECUTABLE): $(BUILD_DIR)/main.o $(BUILD_DIR)/hdr.o $(BUILD_DIR)/hdr_cu.o $(BUILD_DIR)/basicImageManipulation.o $(BUILD_DIR)/filtering_cu.o $(BUILD_DIR)/Image.o $(BUILD_DIR)/lodepng.o
+	$(NVCC) $(NVCC_FLAGS) $(BUILD_DIR)/main.o $(BUILD_DIR)/hdr.o $(BUILD_DIR)/hdr_cu.o $(BUILD_DIR)/basicImageManipulation.o $(BUILD_DIR)/filtering_cu.o $(BUILD_DIR)/Image.o $(BUILD_DIR)/lodepng.o -o $(EXECUTABLE)
 	mkdir -p $(OUTPUT)
 
 # ------------------------------------------------------------------------------
@@ -90,7 +90,7 @@ $(BUILD_DIR)/hdr_cu.o: hdr.cu cuda_utils.h hdr.h
 # rule for creating the tests: link test .o files using nvcc
 # It creates each test .o file and links it to all the other ones.
 
-$(TESTS) : $(BUILD_DIR)/hdr.o $(BUILD_DIR)/hdr_cu.o $(BUILD_DIR)/basicImageManipulation.o $(BUILD_DIR)/filtering.o $(BUILD_DIR)/filtering_cu.o $(BUILD_DIR)/Image.o $(BUILD_DIR)/lodepng.o
+$(TESTS) : $(BUILD_DIR)/hdr.o $(BUILD_DIR)/hdr_cu.o $(BUILD_DIR)/basicImageManipulation.o $(BUILD_DIR)/filtering_cu.o $(BUILD_DIR)/Image.o $(BUILD_DIR)/lodepng.o
 	$(NVCC) $(NVCC_FLAGS) -c $(@).cpp -o $(BUILD_DIR)/$@.o
-	$(NVCC) $(NVCC_FLAGS) $(BUILD_DIR)/$(@).o $(BUILD_DIR)/hdr.o $(BUILD_DIR)/hdr_cu.o $(BUILD_DIR)/filtering.o $(BUILD_DIR)/filtering_cu.o $(BUILD_DIR)/basicImageManipulation.o $(BUILD_DIR)/Image.o $(BUILD_DIR)/lodepng.o -o $(@)
+	$(NVCC) $(NVCC_FLAGS) $(BUILD_DIR)/$(@).o $(BUILD_DIR)/hdr.o $(BUILD_DIR)/hdr_cu.o $(BUILD_DIR)/filtering_cu.o $(BUILD_DIR)/basicImageManipulation.o $(BUILD_DIR)/Image.o $(BUILD_DIR)/lodepng.o -o $(@)
 	mkdir -p $(OUTPUT)

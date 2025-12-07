@@ -350,9 +350,6 @@ void testToneMapping_vine() {
 
 int main() {
 
-    // testComputeWeight();
-    // testComputeFactor();
-    // testMakeHDR();
     testToneMapping_ante1();
     testToneMapping_ante2();
     testToneMapping_ante3();
