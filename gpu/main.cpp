@@ -323,12 +323,12 @@ int main() {
     testToneMapping_ante1();
     testToneMapping_ante2();
     testToneMapping_ante3();
-    testToneMapping_boston();
-    testToneMapping_design();
-    testToneMapping_horse();
-    testToneMapping_nyc();
-    testToneMapping_sea();
-    testToneMapping_vine();
+    // testToneMapping_boston();
+    // testToneMapping_design();
+    // testToneMapping_horse();
+    // testToneMapping_nyc();
+    // testToneMapping_sea();
+    // testToneMapping_vine();
 
     return 0;
 }
