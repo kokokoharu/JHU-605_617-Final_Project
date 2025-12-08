@@ -355,10 +355,10 @@ int main() {
     testToneMapping_ante3();
     testToneMapping_boston();
     testToneMapping_design();
-    testToneMapping_horse();
-    testToneMapping_nyc();
-    testToneMapping_sea();
-    testToneMapping_vine();
+    //testToneMapping_horse();
+    //testToneMapping_nyc();
+    //testToneMapping_sea();
+    //testToneMapping_vine();
 
     return 0;
 }
